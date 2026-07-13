@@ -1,433 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex" />
-  <title>Rentora · Under Renovation</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --blue: #2450E0;
-      --blue-dark: #1b3ec2;
-      --blue-soft: #eef2ff;
-      --navy: #0f1e46;
-      --amber: #f4b942;
-      --ink: #10131c;
-      --muted: #6b7280;
-      --line: #e8eaf0;
-      --bg: #f6f8fc;
-      --card: #ffffff;
-      --radius: 20px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Rentora · Under Renovation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --blue: #2450E0;
+    --blue-dark: #1b3ec2;
+    --blue-soft: #eef2ff;
+    --navy: #0f172a;
+    --amber: #f4b942;
+    --muted: #64748b;
+    --muted-2: #94a3b8;
+    --line: #e8eaf0;
+    --bg: #f8fafc;
+    --green-bg: #e7f6ee;
+    --green: #1a9e5f;
+    --green-text: #147a49;
+    --red: #e0402b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--navy);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* Faint background logo watermark */
+  .watermark {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .watermark img {
+    width: 70%;
+    max-width: 680px;
+    opacity: 0.035;
+    filter: grayscale(100%);
+  }
 
-    html, body { height: 100%; }
+  /* Caution-tape motif, bottom corner */
+  .tape-bg {
+    position: fixed;
+    z-index: 0;
+    pointer-events: none;
+    bottom: -70px;
+    right: -20%;
+    height: 130px;
+    width: 150%;
+    transform: rotate(-6deg);
+    opacity: 0.05;
+    background-image: repeating-linear-gradient(-45deg, var(--amber) 0 22px, var(--navy) 22px 44px);
+  }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: var(--ink);
-      background: var(--bg);
-      -webkit-font-smoothing: antialiased;
-      position: relative;
-      min-height: 100%;
-      overflow-x: hidden;
-    }
+  .shell { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* Subtle caution-tape stripe motif in background */
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      z-index: 0;
-      pointer-events: none;
-      width: 160%;
-      height: 140px;
-      background-image: repeating-linear-gradient(
-        -45deg,
-        var(--amber) 0 26px,
-        var(--navy) 26px 52px
-      );
-      opacity: 0.08;
-    }
-    body::before {
-      top: -60px;
-      left: -30%;
-      transform: rotate(-6deg);
-    }
-    body::after {
-      bottom: -60px;
-      right: -30%;
-      transform: rotate(-6deg);
-      opacity: 0.06;
-    }
+  header { width: 100%; border-bottom: 1px solid var(--line); background: #fff; }
+  .header-inner {
+    margin: 0 auto;
+    max-width: 1120px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+  }
+  .header-inner img { display: block; height: 32px; width: auto; }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .status-dot { position: relative; display: block; height: 9px; width: 9px; border-radius: 999px; background: var(--amber); }
+  .status-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--amber);
+    animation: pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    70% { transform: scale(3); opacity: 0; }
+    100% { transform: scale(3); opacity: 0; }
+  }
 
-    .page {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  main {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1120px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 40px 20px 56px;
+  }
+  .grid {
+    display: grid;
+    width: 100%;
+    gap: 40px;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .grid { grid-template-columns: 1.15fr 1fr; gap: 64px; }
+  }
 
-    /* Header */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 28px;
-      max-width: 1180px;
-      width: 100%;
-      margin: 0 auto;
-    }
+  /* Left column */
+  .left { text-align: center; }
+  @media (min-width: 1024px) { .left { text-align: left; } }
 
-    .logo img {
-      height: 34px;
-      width: auto;
-      display: block;
-    }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-radius: 999px;
+    background: var(--blue-soft);
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+  }
+  .eyebrow svg { height: 16px; width: 16px; }
 
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--navy);
-      box-shadow: 0 1px 2px rgba(16,19,28,0.04);
-    }
+  h1 {
+    margin-bottom: 20px;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  h1 .accent { color: var(--blue); }
+  @media (min-width: 640px) { h1 { font-size: 44px; } }
 
-    .status-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--amber);
-      position: relative;
-    }
-    .status-dot::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: var(--amber);
-      animation: pulse 1.8s ease-out infinite;
-    }
-    @keyframes pulse {
-      0%   { transform: scale(1); opacity: 0.7; }
-      70%  { transform: scale(3); opacity: 0; }
-      100% { transform: scale(3); opacity: 0; }
-    }
+  .lede {
+    margin: 0 auto 36px;
+    max-width: 520px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  @media (min-width: 640px) { .lede { font-size: 17px; } }
+  @media (min-width: 1024px) { .lede { margin-left: 0; margin-right: 0; } }
 
-    /* Main */
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 20px 48px;
-    }
+  form.notify {
+    margin: 0 auto;
+    display: flex;
+    max-width: 480px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  @media (min-width: 640px) { form.notify { flex-direction: row; } }
+  @media (min-width: 1024px) { form.notify { margin-left: 0; } }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: 0 20px 50px -24px rgba(15,30,70,0.18);
-      max-width: 760px;
-      width: 100%;
-      padding: 44px 44px 40px;
-      text-align: center;
-    }
+  .input-wrap { position: relative; flex: 1; }
+  .input-wrap svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 18px;
+    width: 18px;
+    color: var(--muted-2);
+    pointer-events: none;
+  }
+  .input-wrap input {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    padding: 14px 16px 14px 44px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--navy);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .input-wrap input::placeholder { color: var(--muted-2); }
+  .input-wrap input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(36,80,224,0.15);
+  }
+  .input-wrap input.error { border-color: var(--red); }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--blue-soft);
-      color: var(--blue);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 7px 14px;
-      border-radius: 999px;
-      margin-bottom: 22px;
-    }
+  .notify button {
+    white-space: nowrap;
+    border: none;
+    border-radius: 12px;
+    background: var(--blue);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 24px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px -8px rgba(36,80,224,0.5);
+    transition: background 0.15s, transform 0.05s;
+  }
+  .notify button:hover { background: var(--blue-dark); }
+  .notify button:active { transform: translateY(1px); }
 
-    h1 {
-      font-size: 34px;
-      line-height: 1.2;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
-    }
-    h1 .accent { color: var(--blue); }
+  .error-msg {
+    display: none;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--red);
+  }
+  .error-msg.show { display: block; }
 
-    .subtext {
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.6;
-      max-width: 560px;
-      margin: 0 auto 30px;
-    }
+  .success-msg {
+    display: none;
+    margin: 0 auto;
+    max-width: 480px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 12px;
+    border: 1px solid #bfe8d2;
+    background: var(--green-bg);
+    color: var(--green-text);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 16px 20px;
+  }
+  .success-msg.show { display: flex; }
+  @media (min-width: 1024px) { .success-msg { margin-left: 0; justify-content: flex-start; } }
+  .success-msg svg { flex-shrink: 0; height: 18px; width: 18px; }
 
-    /* Progress */
-    .progress-wrap { text-align: left; margin-bottom: 30px; }
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--navy);
-      margin-bottom: 9px;
-    }
-    .progress-pct { color: var(--blue); }
-    .progress-track {
-      height: 10px;
-      background: #eef1f7;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      width: 62%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--blue), var(--blue-dark));
-      position: relative;
-      overflow: hidden;
-    }
-    .progress-fill::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: repeating-linear-gradient(
-        -45deg,
-        rgba(255,255,255,0.28) 0 10px,
-        rgba(255,255,255,0) 10px 20px
-      );
-      animation: stripes 1s linear infinite;
-    }
-    @keyframes stripes {
-      from { background-position: 0 0; }
-      to   { background-position: 28px 0; }
-    }
+  /* Right: work order card */
+  .card {
+    position: relative;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 24px;
+    box-shadow: 0 16px 40px -24px rgba(15,30,70,0.16);
+  }
+  @media (min-width: 640px) { .card { padding: 28px; } }
 
-    /* Steps */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 30px;
-    }
-    .step {
-      background: #fbfcfe;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px 14px;
-      text-align: left;
-    }
-    .step-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
-      font-size: 13px;
-      font-weight: 700;
-      background: #eef1f7;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .step-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-    .step-state { font-size: 12px; font-weight: 600; color: var(--muted); }
+  .corner-tape {
+    position: absolute;
+    top: -7px;
+    left: 32px;
+    height: 14px;
+    width: 96px;
+    transform: rotate(-2deg);
+    border-radius: 2px;
+    opacity: 0.8;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    background-image: repeating-linear-gradient(-45deg, var(--amber) 0 22px, var(--navy) 22px 44px);
+  }
 
-    .step.done .step-num { background: #e7f6ee; color: #1a9e5f; }
-    .step.done .step-state { color: #1a9e5f; }
+  .card-head {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-head .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted-2);
+  }
+  .card-head .title { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .card-head .pct { font-size: 24px; font-weight: 800; color: var(--blue); }
 
-    .step.active {
-      background: var(--blue-soft);
-      border-color: #c9d5ff;
-    }
-    .step.active .step-num { background: var(--blue); color: #fff; }
-    .step.active .step-state { color: var(--blue); }
+  .progress-track {
+    margin-bottom: 28px;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #eef1f7;
+  }
+  .progress-fill {
+    position: relative;
+    height: 100%;
+    width: 62%;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--blue);
+    animation: growIn 1s cubic-bezier(0.21,0.61,0.35,1) 0.3s both;
+  }
+  @keyframes growIn { from { width: 0; } to { width: 62%; } }
+  .progress-fill::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.28) 0 10px, rgba(255,255,255,0) 10px 20px);
+    animation: stripes 1s linear infinite;
+  }
+  @keyframes stripes { from { background-position: 0 0; } to { background-position: 28px 0; } }
 
-    /* Notify form */
-    .notify {
-      display: flex;
-      gap: 10px;
-      max-width: 460px;
-      margin: 0 auto;
-    }
-    .notify input {
-      flex: 1;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 13px 15px;
-      font-size: 15px;
-      font-family: inherit;
-      color: var(--ink);
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .notify input:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(36,80,224,0.15);
-    }
-    .notify button {
-      border: none;
-      background: var(--blue);
-      color: #fff;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 13px 22px;
-      border-radius: 12px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s, transform 0.05s;
-    }
-    .notify button:hover { background: var(--blue-dark); }
-    .notify button:active { transform: translateY(1px); }
+  ol.steps { list-style: none; }
+  .step {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .step.active { border: 1px solid #c9d5ff; background: var(--blue-soft); }
+  .connector {
+    position: absolute;
+    left: 33px;
+    top: 52px;
+    height: calc(100% - 40px);
+    width: 1px;
+    background: var(--line);
+  }
+  .step-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    color: var(--muted-2);
+  }
+  .step-icon svg { height: 20px; width: 20px; }
+  .step.done .step-icon { background: var(--green-bg); color: var(--green); }
+  .step.active .step-icon { background: var(--blue); color: #fff; }
+  .step.active .step-icon svg { animation: iconPulse 1.6s ease-in-out infinite; }
+  @keyframes iconPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
 
-    .success {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      max-width: 460px;
-      margin: 0 auto;
-      background: #e7f6ee;
-      color: #147a49;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 14px 16px;
-      border-radius: 12px;
-    }
-    .success.show { display: flex; }
-    .success svg { flex-shrink: 0; }
+  .step-body { min-width: 0; padding-top: 2px; }
+  .step-top { display: flex; align-items: center; gap: 8px; }
+  .step-num { font-size: 11px; font-weight: 700; color: var(--muted-2); }
+  .step.done .step-num { color: var(--green); }
+  .step.active .step-num { color: var(--blue); }
+  .step-title { font-size: 14px; font-weight: 600; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .step-desc { font-size: 13px; color: var(--muted); }
+  .spin { height: 14px; width: 14px; color: var(--blue); animation: spin 1s linear infinite; flex-shrink: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 24px 20px 32px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    footer a {
-      color: var(--blue);
-      font-weight: 600;
-      text-decoration: none;
-      margin-left: 6px;
-    }
-    footer a:hover { text-decoration: underline; }
+  footer {
+    border-top: 1px solid var(--line);
+    background: #fff;
+    padding: 24px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  footer a { margin-left: 6px; font-weight: 600; color: var(--blue); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
 
-    /* Responsive */
-    @media (max-width: 640px) {
-      header { padding: 18px 18px; flex-wrap: wrap; gap: 12px; }
-      .card { padding: 30px 22px 28px; }
-      h1 { font-size: 26px; }
-      .subtext { font-size: 15px; }
-      .steps { grid-template-columns: 1fr; }
-      .notify { flex-direction: column; }
-      .notify button { width: 100%; }
-    }
-  </style>
+  .fade-up {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.45s cubic-bezier(0.21,0.61,0.35,1) forwards;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+</style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <a class="logo" href="/" aria-label="Rentora home">
+
+<div class="watermark" aria-hidden="true">
+  <img src="https://lautech-rentals.vercel.app/rentora-logo.png" alt="" />
+</div>
+<div class="tape-bg" aria-hidden="true"></div>
+
+<div class="shell">
+  <header>
+    <div class="header-inner">
+      <a href="/" aria-label="Rentora home">
         <img src="https://lautech-rentals.vercel.app/rentora-logo.png" alt="Rentora" />
       </a>
       <span class="status-pill">
         <span class="status-dot" aria-hidden="true"></span>
         Under renovation
       </span>
-    </header>
+    </div>
+  </header>
 
-    <main>
-      <section class="card" role="region" aria-label="Site maintenance notice">
-        <span class="eyebrow">🛠️ Site Maintenance</span>
+  <main>
+    <div class="grid">
+      <!-- Left column -->
+      <div class="left">
+        <span class="eyebrow fade-up" style="animation-delay:0s">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z"/><path d="m7 9 3-3 3 3"/><path d="M10 6v11"/><path d="M14.51 6.02 14.5 6a2.12 2.12 0 0 1 3-3l4.5 4.5-3 3-4.49-4.48Z"/><path d="M16 13.5V16h2.5"/><path d="m16.5 18 5.5-5.5"/></svg>
+          Site Maintenance
+        </span>
 
-        <h1>We're renovating your <span class="accent">hostel search</span> experience</h1>
+        <h1 class="fade-up" style="animation-delay:0.08s">
+          We're renovating your <span class="accent">hostel search</span> experience
+        </h1>
 
-        <p class="subtext">
-          Rentora is offline for scheduled upgrades — new filters, faster inspection
-          booking, and a smoother way to unlock verified agents near LAUTECH. Back
-          online shortly.
+        <p class="lede fade-up" style="animation-delay:0.16s">
+          Rentora is offline for scheduled upgrades — new filters, faster inspection booking, and a smoother way to unlock verified agents near LAUTECH. Back online shortly.
         </p>
 
-        <div class="progress-wrap">
-          <div class="progress-label">
-            <span>Renovation in progress</span>
-            <span class="progress-pct">62%</span>
-          </div>
-          <div class="progress-track" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="Renovation in progress">
-            <div class="progress-fill"></div>
+        <div class="fade-up" style="animation-delay:0.24s">
+          <form class="notify" id="notifyForm" novalidate>
+            <label for="email" class="sr-only">Email address</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+            </div>
+            <button type="submit">Notify me</button>
+          </form>
+          <p class="error-msg" id="errorMsg" role="alert">Please enter a valid email address.</p>
+
+          <div class="success-msg" id="successMsg" role="status">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            You're on the list — we'll email you the moment we're back.
           </div>
         </div>
+      </div>
 
-        <div class="steps">
-          <div class="step done">
-            <span class="step-num">01</span>
-            <div class="step-title">Taking listings offline</div>
-            <div class="step-state">✓ Done</div>
+      <!-- Right: work order card -->
+      <section class="card fade-up" style="animation-delay:0.16s" role="region" aria-label="Renovation progress">
+        <div class="corner-tape" aria-hidden="true"></div>
+
+        <div class="card-head">
+          <div>
+            <p class="label">Work order</p>
+            <p class="title">Renovation in progress</p>
           </div>
-          <div class="step active">
-            <span class="step-num">02</span>
-            <div class="step-title">Rebuilding the platform</div>
-            <div class="step-state">● In progress</div>
-          </div>
-          <div class="step">
-            <span class="step-num">03</span>
-            <div class="step-title">Reopening doors</div>
-            <div class="step-state">Next</div>
-          </div>
+          <span class="pct">62%</span>
         </div>
 
-        <form class="notify" id="notifyForm" novalidate>
-          <label for="email" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" required autocomplete="email" />
-          <button type="submit">Notify me</button>
-        </form>
-
-        <div class="success" id="successMsg" role="status">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M16.7 5.7 8 14.4l-4.7-4.7" stroke="#147a49" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          You're on the list — we'll email you the moment we're back.
+        <div class="progress-track" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="Renovation in progress">
+          <div class="progress-fill"></div>
         </div>
+
+        <ol class="steps">
+          <li class="step done fade-up" style="animation-delay:0.32s">
+            <span class="connector" aria-hidden="true"></span>
+            <span class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <div class="step-body">
+              <div class="step-top">
+                <span class="step-num">01</span>
+                <span class="step-title">Taking listings offline</span>
+              </div>
+              <p class="step-desc">All hostels safely archived</p>
+            </div>
+          </li>
+
+          <li class="step active fade-up" style="animation-delay:0.4s">
+            <span class="connector" aria-hidden="true"></span>
+            <span class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </span>
+            <div class="step-body">
+              <div class="step-top">
+                <span class="step-num">02</span>
+                <span class="step-title">Rebuilding the platform</span>
+                <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+              </div>
+              <p class="step-desc">New filters &amp; faster bookings</p>
+            </div>
+          </li>
+
+          <li class="step fade-up" style="animation-delay:0.48s">
+            <span class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"/></svg>
+            </span>
+            <div class="step-body">
+              <div class="step-top">
+                <span class="step-num">03</span>
+                <span class="step-title">Reopening doors</span>
+              </div>
+              <p class="step-desc">Back online for LAUTECH students</p>
+            </div>
+          </li>
+        </ol>
       </section>
-    </main>
+    </div>
+  </main>
 
-    <footer>
-      Rentora · Student Housing Platform, Ogbomosho
-      <a href="mailto:hello@rentora.ng">Contact us</a>
-    </footer>
-  </div>
+  <footer>
+    Rentora · Student Housing Platform, Ogbomosho
+    <a href="mailto:hello@rentora.ng">Contact us</a>
+  </footer>
+</div>
 
-  <script>
-    (function () {
-      var form = document.getElementById('notifyForm');
-      var success = document.getElementById('successMsg');
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var email = document.getElementById('email');
-        if (!email.value || !email.checkValidity()) {
-          email.focus();
-          email.style.borderColor = '#e0402b';
-          return;
-        }
-        form.style.display = 'none';
-        success.classList.add('show');
-      });
-    })();
-  </script>
+<script>
+  (function () {
+    var form = document.getElementById('notifyForm');
+    var email = document.getElementById('email');
+    var error = document.getElementById('errorMsg');
+    var success = document.getElementById('successMsg');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+      if (!valid) {
+        email.classList.add('error');
+        error.classList.add('show');
+        email.focus();
+        return;
+      }
+      email.classList.remove('error');
+      error.classList.remove('show');
+      form.style.display = 'none';
+      success.classList.add('show');
+    });
+
+    email.addEventListener('input', function () {
+      if (email.classList.contains('error')) {
+        email.classList.remove('error');
+        error.classList.remove('show');
+      }
+    });
+  })();
+</script>
+
 </body>
 </html>
