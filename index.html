@@ -301,13 +301,13 @@
   .progress-fill {
     position: relative;
     height: 100%;
-    width: 62%;
+    width: 80%;
     overflow: hidden;
     border-radius: 999px;
     background: var(--blue);
     animation: growIn 1s cubic-bezier(0.21,0.61,0.35,1) 0.3s both;
   }
-  @keyframes growIn { from { width: 0; } to { width: 62%; } }
+  @keyframes growIn { from { width: 0; } to { width: 80%; } }
   .progress-fill::after {
     content: "";
     position: absolute;
@@ -449,10 +449,10 @@
             <p class="label">Work order</p>
             <p class="title">Renovation in progress</p>
           </div>
-          <span class="pct">62%</span>
+          <span class="pct">80%</span>
         </div>
 
-        <div class="progress-track" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="Renovation in progress">
+        <div class="progress-track" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="Renovation in progress">
           <div class="progress-fill"></div>
         </div>
 
